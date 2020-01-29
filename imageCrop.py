@@ -39,7 +39,7 @@ def mouse_callback(event, x, y, flags, param):
         cv2.imshow("img_cropped", img_cropped)
 
         os.remove(param[2])
-        cv2.imwrite(file_name+'.jpg',img_cropped);
+        cv2.imwrite(my_path + '/' + file_name+'.jpg',img_cropped);
 
 
 # cv2.setMouseCallback('img_color', mouse_callback)
@@ -55,7 +55,7 @@ if __name__ == "__main__" :
     print ("file_list: {}".format(file_list_jpg))
 
     for f in file_list_jpg:
-        full_path = my_path + '\\' + f; 
+        full_path = my_path + '/' + f; 
         print(full_path)
         file_name = f.split('.')[0]
         print(file_name)
