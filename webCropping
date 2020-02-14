@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        <%= title %>
+    </title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+    <h1>Image Cropping Page</h1>
+
+    <canvas id="imgCanvas" width="600" height="450">
+        Your browser does not support canvas.
+        <img style='display:none'; id='imgContent'/>
+    </canvas>
+
+    <div>
+        <label for="fileNameInput">파일명:</label>
+        <input type="file-name" id="fileNameInput">
+    </div>
+
+</body>
+<script>
+    // let dirPath = "/assets/"
+    // let imgList = [
+    //     'pokemon4.jpg',
+    //     'pokemon5.jpg',
+    //     'pokemon6.jpg'
+    // ]
+    let imgPath = 'http://helewix.com/howto/wp-content/uploads/2019/11/Guide-Pok%C3%A9mon-Sword-And-Shield-Gen-8-New-Pok%C3%A9mon-List-Full-Galar-Pok%C3%A9dex-Including-Returning-Pok%C3%A9mon-1132x509.jpg';
+    loadImages();
+
+    function loadImages() {
+
+        let canvas = document.getElementById('imgCanvas');
+        let ctx = canvas.getContext('2d');
+
+        console.log(ctx.canvas.width);
+        console.log(ctx.canvas.height);
+        console.log("asdasdasdasd");
+        // console.log(window.innerWidth);
+        // console.log(window.innerHeight);
+
+
+
+        if (ctx) {
+            let imgObj = document.getElementById("imgContent");
+
+            imgObj.onload = function(e) {
+                console.log(this.width);
+                console.log(this.height);
+                let v = ((this.width / ctx.canvas.width - this.height / ctx.canvas.height) > 0) ? (1 - this.width / ctx.canvas.width) : (1 - this.height / ctx.canvas.height);
+
+                console.log("w");
+                console.log(this.width / ctx.canvas.width);
+                console.log("h");
+                console.log(this.height / ctx.canvas.height)
+
+                console.log("v");
+                console.log(v);
+                v = v.toFixed(2);
+
+                console.log(this.width);
+                console.log(this.height);
+
+                let nw = this.width + (ctx.canvas.width * this.width);
+                let nh = this.height + (ctx.canvas.height * this.height);
+                console.log("new vsaleu");
+                console.log(nw);
+                console.log(nh);
+                ctx.drawImage(imgObj, 0, 0, nw, nh);
+
+            }
+
+            imgObj.src = imgPath;
+        } else {
+            return;
+        }
+
+
+    }
+</script>
+
+</html>
