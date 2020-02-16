@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        <%= title %>
+    </title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+    <h1>Image Cropping Page</h1>
+
+    <canvas id="imgCanvas" width="600" height="450">
+        Your browser does not support canvas.
+        <img style='display:none'; id='imgContent'/>
+    </canvas>
+
+    <div>
+        <label for="fileNameInput">파일명:</label>
+        <input type="file-name" id="fileNameInput">
+    </div>
+
+</body>
+<script>
+    let imgPath = 'http://helewix.com/howto/wp-content/uploads/2019/11/Guide-Pok%C3%A9mon-Sword-And-Shield-Gen-8-New-Pok%C3%A9mon-List-Full-Galar-Pok%C3%A9dex-Including-Returning-Pok%C3%A9mon-1132x509.jpg';
+    loadImages();
+
+    function loadImages() {
+
+        let canvas = document.getElementById('imgCanvas');
+        let ctx = canvas.getContext('2d');
+
+        if (ctx) {
+            let imgObj = document.getElementById("imgContent");
+
+            imgObj.onload = function(e) {
+                let v = (this.width/ctx.canvas.width - this.height/ctx.canvas.height) > 0 ?  this.width/ctx.canvas.width : this.height / ctx.canvas.height;
+                let nw = this.width/v;
+                let nh = this.height/v;
+                ctx.drawImage(imgObj, 0, 0, nw, nh);
+            }
+
+            imgObj.src = imgPath;
+            addEventListeners(canvas);
+        } else {
+            return;
+        }
+
+    }
+
+
+    function addEventListeners(canvas){
+        canvas.onmousedown = function(event){
+            // var coords = canvas.getMousePos(canvas,event);
+            let x = event.clientX;
+            let y = event.clientY;
+            console.log(x);
+            console.log(y);
+        }
+    }
+
+</script>
+<script type="text/javascript" src="/javascript/canvasClass.js"></script>
+
+</html>
