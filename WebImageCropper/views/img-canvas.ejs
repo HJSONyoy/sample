@@ -1,101 +1,99 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <title>TEST</title>
 
     <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
-    
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.min.js"></script>
-  </head>
-  <body>
+</head>
+
+<body>
 
 
     <h1>Crop on canvas with Cropper</h1>
 
     <div>
-      <input type="button" id="button" value="CROP"/>
-      <div class="container">
-        <h3 id="file-label"></h3>
-        <div class="img-container">
-          <canvas id="canvas"></canvas>
+        <input type="button" id="button" value="CROP" />
+        <div class="container">
+            <h3 id="file-label"></h3>
+            <div class="img-container">
+                <canvas id="canvas"></canvas>
+            </div>
         </div>
-      </div>
     </div>
 
-  </body>
+</body>
 
 
-  <script>
+<script>
+    let imgfileList = <%-JSON.stringify(imageList)%>;
+
     let imageCropper = {
-      imgList : [],
-      imgIdx : 0,
-      //cropper
-      image : new Image(),
+        imgList: [],
+        imgIdx: 0,
+        //cropper
+        image: new Image(),
     }
     init();
-    function init(){
-      //If you want to use url image lists, plz check cross origin policy of image server
-      imageCropper.imgList = ['/images/pokemon2.jpg','/images/Guide-Pokémon.jpg'];
-      imageCropper.image.setAttribute('id','image');
-      imageCropper.image.src = imageCropper.imgList[imageCropper.imgIdx];
-      imageCropper.crossOrigin = "anonymous";
-      $("#file-label").html(imageCropper.imgList[imageCropper.imgIdx]);
-    }
 
-    window.addEventListener('DOMContentLoaded', function () {
-      let image= imageCropper.image;
-      if (image.complete) {
-        start.call(image);
-      } else {
-        image.onload = start;
-      }
+
+    function init() {
+        imageCropper.imgList = imgfileList;
+        imageCropper.image.setAttribute('id', 'image');
+        imageCropper.image.src = imageCropper.imgList[imageCropper.imgIdx];
+        imageCropper.image.setAttribute('crossorigin', 'anonymous');
+        $("#file-label").html(imageCropper.imgList[imageCropper.imgIdx]);
+    }
+    window.addEventListener('DOMContentLoaded', function() {
+        let image = imageCropper.image;
+        if (image.complete) {
+            start.call(image);
+        } else {
+            image.onload = start;
+        }
     });
 
     function start() {
-      let canvas = document.getElementById('canvas');
-      canvas.width = this.width;
-      canvas.height = this.height;
-      canvas.getContext('2d').drawImage(this,0,0, this.naturalWidth, this.naturalHeight);
-      imageCropper.cropper = new Cropper(canvas,{
-        aspectRatio: 0,
-        checkCrossOrigin: false,
-      });
+        let canvas = document.getElementById('canvas');
+        canvas.width = this.width;
+        canvas.height = this.height;
+        canvas.getContext('2d').drawImage(this, 0, 0, this.naturalWidth, this.naturalHeight);
+        imageCropper.cropper = new Cropper(canvas, {
+            aspectRatio: 0,
+            checkCrossOrigin: false,
+        });
     }
-
-
-    $("#button").click(function() {   
-      let cropper = imageCropper.cropper;
-      let url = cropper.getCroppedCanvas().toDataURL('image/jpeg');
-      console.log(url);
-      resetImage();
+    $("#button").click(function() {
+        let cropper = imageCropper.cropper;
+        let url = cropper.getCroppedCanvas().toDataURL('image/jpeg');
+        console.log(url);
+        resetImage();
     });
 
-    function resetImage(){
-      let cropper = imageCropper.cropper;
-      let canvas = document.getElementById('canvas');
-      let image = imageCropper.image;
-      cropper.destroy()
-      canvas.getContext('2d').clearRect(0,0,image.width, image.height);
-      let imgIdx = ++imageCropper.imgIdx;
-
-      if(imgIdx >= imageCropper.imgList.length){
-        alert('Crop을 마칩니다');
-        return;
-      }
-      image.src = imageCropper.imgList[imgIdx];
-      $("#file-label").html(imageCropper.imgList[imgIdx]);
+    function resetImage() {
+        let cropper = imageCropper.cropper;
+        let canvas = document.getElementById('canvas');
+        let image = imageCropper.image;
+        cropper.destroy()
+        canvas.getContext('2d').clearRect(0, 0, image.width, image.height);
+        let imgIdx = ++imageCropper.imgIdx;
+        if (imgIdx >= imageCropper.imgList.length) {
+            alert('Crop을 마칩니다');
+            return;
+        }
+        image.src = imageCropper.imgList[imgIdx];
+        $("#file-label").html(imageCropper.imgList[imgIdx]);
     }
+</script>
 
-
-
-  </script>
-
-  <style>
+<style>
     img {
-      max-width: 100%;
+        max-width: 100%;
     }
-  </style>
+</style>
 
 
 
